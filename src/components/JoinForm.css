@@ -1,0 +1,141 @@
+/* JoinForm.css */
+
+.join-form-container {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    padding: 3rem;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.join-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-left: 0.25rem;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    border: 2px solid #E5E7EB;
+    background: #F9FAFB;
+    font-size: 1rem;
+    color: var(--color-text);
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: #9CA3AF;
+}
+
+.form-select:hover {
+    background-color: #F3F4F6;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-footer {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.btn-large {
+    width: 100%;
+    padding: 1.25rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: 0.025em;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
+    box-shadow: 0 10px 20px -5px rgba(0, 113, 227, 0.3);
+}
+
+.btn-large:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px -5px rgba(0, 113, 227, 0.4);
+}
+
+.btn-large:active {
+    transform: translateY(0);
+}
+
+.form-disclaimer {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #9CA3AF;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .join-form-container {
+        padding: 2rem 1.5rem;
+        /* Tighter padding on mobile */
+        box-shadow: none;
+        /* Flatten on mobile for "native" feel or soft shadow */
+        border: none;
+        background: transparent;
+        /* Or keep white if page background is grey */
+    }
+
+    /* Make the container look like a clean card even on mobile if needed, 
+       but often simpler is better. Let's keep it clean. */
+    .join-form-container {
+        background: #ffffff;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        border: 1px solid #F3F4F6;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        /* Stack everything on mobile */
+        gap: 1.25rem;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+        padding: 0.875rem 1rem;
+        /* Slightly smaller padding */
+        font-size: 16px;
+        /* Prevent IOS zoom */
+    }
+}

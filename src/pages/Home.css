@@ -1,0 +1,154 @@
+/* Home.css */
+
+/* Animations */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.25);
+    }
+
+    50% {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 30px -5px rgba(16, 185, 129, 0.3);
+    }
+
+    100% {
+        transform: translateY(0px);
+        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.25);
+    }
+}
+
+/* CTA Styles */
+.trial-cta-container {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 10;
+}
+
+.trial-cta-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.25);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    transform: translateY(0);
+    animation: float 3s ease-in-out infinite;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.trial-cta-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 5px 15px -5px rgba(16, 185, 129, 0.2);
+}
+
+.trial-cta-text {
+    font-weight: 700;
+    color: var(--color-primary);
+    font-size: 1.25rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.trial-cta-icon {
+    font-size: 1.5rem;
+}
+
+/* Training Grid */
+.grid-training {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.training-card {
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+}
+
+.training-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.training-title {
+    margin-bottom: 1rem;
+    color: black;
+}
+
+/* Skyline Section */
+.skyline-section {
+    background: var(--color-white);
+    padding-bottom: var(--spacing-xxl);
+    padding-top: 2rem;
+}
+
+.skyline-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: var(--spacing-xl);
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.skyline-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.skyline-image {
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    display: block;
+}
+
+.skyline-content h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+}
+
+.skyline-content p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin-bottom: 0;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .skyline-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .skyline-image-container {
+        justify-content: center;
+    }
+
+    .skyline-image {
+        max-width: 220px;
+        /* Somewhat smaller on mobile */
+    }
+
+    .skyline-content h2 {
+        font-size: 2rem;
+        /* Scaled down from 2.5rem */
+    }
+
+    .training-card {
+        padding: 1.5rem;
+    }
+}
