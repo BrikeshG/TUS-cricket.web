@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tus-cricket-pfarrkirchen.de/sitemap.xml

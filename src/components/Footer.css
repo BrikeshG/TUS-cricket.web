@@ -1,0 +1,18 @@
+.footer-minimal {
+    background-color: var(--color-primary-dark);
+    padding: 2rem 0;
+    margin-top: auto;
+    border-top: none;
+    color: #FFFFFF;
+}
+
+.social-icon-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.social-icon-link:hover {
+    color: #FFFFFF !important;
+    transform: translateY(-2px);
+    opacity: 1;
+}
