@@ -7,8 +7,9 @@ const Home = () => {
     return (
         <div className="page-home">
             <Helmet>
-                <title>TuS Cricket Pfarrkirchen | Cricket Club in Pfarrkirchen (T20 & 50 Overs)</title>
+                <title>TuS Cricket | Cricket Club in Pfarrkirchen</title>
                 <meta name="description" content="Official cricket department of TuS 1860 Pfarrkirchen e.V. Indoor winter training and summer league matches (T20 + 50 overs Verbandsliga). Beginners and students welcome." />
+                <link rel="canonical" href="https://tus-cricket-pfarrkirchen.de/" />
 
                 {/* Open Graph */}
                 <meta property="og:title" content="TuS Cricket Pfarrkirchen | Cricket Club in Pfarrkirchen" />

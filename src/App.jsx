@@ -8,6 +8,8 @@ import Team from './pages/Team';
 import Contact from './pages/Contact';
 import ScrollToTop from './components/ScrollToTop';
 import Success from './pages/Success';
+import Impressum from './pages/Impressum';
+import Privacy from './pages/Privacy';
 import './App.css';
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
           <Route path="/team" element={<Team />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/success" element={<Success />} />
+          <Route path="/impressum" element={<Impressum />} />
+          <Route path="/privacy" element={<Privacy />} />
         </Routes>
       </main>
       <Footer />

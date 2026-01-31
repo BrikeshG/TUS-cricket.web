@@ -10,6 +10,15 @@ const JoinForm = () => {
         e.preventDefault();
         setIsSubmitting(true);
 
+        // Development Mock for Localhost
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.log("Localhost detected - Simulating successful submission");
+            setTimeout(() => {
+                navigate("/success");
+            }, 800);
+            return;
+        }
+
         const formData = new FormData(e.target);
         const data = new URLSearchParams(formData).toString();
 
@@ -45,6 +54,9 @@ const JoinForm = () => {
                 {/* Netlify Forms Configuration */}
                 <input type="hidden" name="form-name" value="join-form" />
                 <input type="hidden" name="subject" value="New Player Application via Website" />
+                <p style={{ display: 'none' }}>
+                    <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+                </p>
 
                 <div className="form-grid">
                     <div className="form-group full-width">
@@ -122,15 +134,29 @@ const JoinForm = () => {
                     </div>
                 </div>
 
-                <div className="form-footer">
-                    <button
-                        type="submit"
-                        className="btn btn-primary btn-large"
-                        disabled={isSubmitting}
-                    >
-                        {isSubmitting ? 'Sending...' : 'Send Application'}
-                    </button>
-                    <p className="form-disclaimer">By clicking send, you agree to our privacy policy.</p>
+                <div className="form-footer-section" style={{ marginTop: '2rem' }}>
+                    <div className="form-group-checkbox" style={{ marginBottom: '1.5rem', textAlign: 'left' }}>
+                        <label className="checkbox-container" style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', cursor: 'pointer', fontSize: '0.9rem' }}>
+                            <input
+                                type="checkbox"
+                                name="privacy-agreement"
+                                required
+                                style={{ marginTop: '3px' }}
+                            />
+                            <span>
+                                I have read and agree to the <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}>Privacy Policy</a>.
+                            </span>
+                        </label>
+                    </div>
+                    <div className="form-footer" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <button
+                            type="submit"
+                            className="btn btn-primary btn-large"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? 'Sending...' : 'Send Application'}
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

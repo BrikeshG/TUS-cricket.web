@@ -1,9 +1,15 @@
 import React from 'react';
 import { Mail, MapPin, ExternalLink } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const Contact = () => {
     return (
         <div className="page-contact">
+            <Helmet>
+                <title>Contact Us | TuS Cricket Pfarrkirchen</title>
+                <meta name="description" content="Get in touch with TuS Cricket Pfarrkirchen. Contact us for training inquiries, friendly matches, or sponsorship." />
+                <link rel="canonical" href="https://tus-cricket-pfarrkirchen.de/contact" />
+            </Helmet>
             <main className="section-padding">
                 <div className="container">
                     <div className="text-center mb-5">

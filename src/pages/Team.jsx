@@ -10,10 +10,11 @@ const Team = () => {
             <Helmet>
                 <title>Team | TuS Cricket Pfarrkirchen</title>
                 <meta name="description" content="Meet the TuS Cricket Pfarrkirchen squad — a cricket department of TuS 1860 Pfarrkirchen e.V." />
+                <link rel="canonical" href="https://tus-cricket-pfarrkirchen.de/team" />
 
                 {/* Open Graph */}
                 <meta property="og:title" content="Team | TuS Cricket Pfarrkirchen" />
-                <meta property="og:description" content="Meet the TuS Cricket Pfarrkirchen squad." />
+                <meta property="og:description" content="Meet the TuS Cricket squad." />
                 <meta property="og:image" content="https://tus-cricket-pfarrkirchen.de/team/team-group.jpg" />
                 <meta property="og:url" content="https://tus-cricket-pfarrkirchen.de/team" />
             </Helmet>

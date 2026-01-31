@@ -20,7 +20,7 @@ const Navbar = () => {
             <div className="container navbar-container">
                 <NavLink to="/" className="navbar-logo">
                     <img src="/logo.png" alt="TUS Cricket Logo" className="logo-img" />
-                    <span className="logo-text">TUS Cricket</span>
+                    <span className="logo-text">TuS Cricket</span>
                 </NavLink>
 
                 {/* Desktop Menu */}

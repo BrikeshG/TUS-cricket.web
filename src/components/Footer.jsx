@@ -13,10 +13,13 @@ const Footer = () => {
                 flexWrap: 'wrap'
             }}>
                 <p style={{ margin: 0, color: 'rgba(255, 255, 255, 0.8)' }}>
-                    &copy; {new Date().getFullYear()} TUS Cricket Pfarrkirchen.
+                    &copy; {new Date().getFullYear()} TuS Cricket Pfarrkirchen.
                 </p>
 
                 <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                    <NavLink to="/impressum" style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '0.8rem' }}>Impressum</NavLink>
+                    <NavLink to="/privacy" style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '0.8rem' }}>Privacy</NavLink>
+                    <div style={{ width: '1px', height: '12px', background: 'rgba(255, 255, 255, 0.2)', margin: '0 0.25rem' }}></div>
                     <a
                         href="https://www.instagram.com/pfarrkirchen_cricket/"
                         target="_blank"

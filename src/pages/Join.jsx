@@ -6,8 +6,9 @@ const Join = () => {
     return (
         <div className="page-join">
             <Helmet>
-                <title>Join Us | TuS Cricket Pfarrkirchen</title>
+                <title>Join Us | TuS Cricket</title>
                 <meta name="description" content="Join TuS Cricket Pfarrkirchen in Pfarrkirchen, Bavaria. Beginners, students, and experienced players welcome." />
+                <link rel="canonical" href="https://tus-cricket-pfarrkirchen.de/join" />
 
                 {/* Open Graph */}
                 <meta property="og:title" content="Join Us | TuS Cricket Pfarrkirchen" />
