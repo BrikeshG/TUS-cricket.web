@@ -188,7 +188,6 @@ button {
   transform: scale(0.98);
 }
 
-/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -215,14 +214,29 @@ button {
   }
 }
 
+/* Premium Spring-like Animation Curves */
+:root {
+  --ease-out-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .fade-in {
-  animation: fadeIn 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: fadeIn 0.8s var(--ease-out-expo) forwards;
 }
 
 .reveal {
-  animation: reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  /* Hidden initially */
+  animation: reveal 1s var(--ease-out-expo) forwards;
 }
 
+.spring-up {
+  opacity: 0;
+  animation: reveal 0.8s var(--ease-out-spring) forwards;
+}
+
+/* More granular staggering for that "pro" feel */
 .delay-1 {
   animation-delay: 0.1s;
 }
@@ -241,6 +255,18 @@ button {
 
 .delay-5 {
   animation-delay: 0.5s;
+}
+
+.delay-6 {
+  animation-delay: 0.6s;
+}
+
+.delay-7 {
+  animation-delay: 0.7s;
+}
+
+.delay-8 {
+  animation-delay: 0.8s;
 }
 
 /* Utility Classes */

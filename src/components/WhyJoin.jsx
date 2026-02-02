@@ -39,7 +39,9 @@ const WhyJoin = () => {
                 </div>
                 <div className="benefits-grid">
                     {benefits.map((benefit, index) => (
-                        <BenefitCard key={index} {...benefit} />
+                        <div key={index} className={`reveal delay-${index + 2}`}>
+                            <BenefitCard {...benefit} />
+                        </div>
                     ))}
                 </div>
             </div>

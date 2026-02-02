@@ -43,20 +43,20 @@ const Home = () => {
             <main>
                 <Hero />
 
-                <section className="section-padding reveal">
+                <section className="section-padding">
                     <div className="container">
-                        <div className="trial-cta-container">
-                            <a href="/join" className="trial-cta-button fade-in delay-2">
+                        <div className="trial-cta-container reveal delay-1">
+                            <a href="/join" className="trial-cta-button">
                                 <p className="trial-cta-text">
                                     <span className="trial-cta-icon">✨</span>
-                                    Beginners? Come for a FREE trial session!
+                                    Beginner? Come for a FREE trial session!
                                 </p>
                             </a>
                         </div>
 
                         <div className="grid-training">
                             {/* Winter / Indoor */}
-                            <div className="glass shadow-md training-card">
+                            <div className="glass shadow-md training-card reveal delay-3">
                                 <div className="training-icon">❄️</div>
                                 <h3 className="training-title">Training (Winter – Indoor)</h3>
                                 <ul style={{ listStyle: 'none' }}>
@@ -66,7 +66,7 @@ const Home = () => {
                             </div>
 
                             {/* Summer / Outdoor */}
-                            <div className="glass shadow-md training-card reveal delay-2">
+                            <div className="glass shadow-md training-card reveal delay-5">
                                 <div className="training-icon">☀️</div>
                                 <h3 className="training-title">Summer Season</h3>
                                 <p>
