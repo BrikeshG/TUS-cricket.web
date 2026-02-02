@@ -1,16 +1,37 @@
-# React + Vite
+# TuS Cricket Pfarrkirchen - Official Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the official web application for the Cricket Department of **TuS 1860 Pfarrkirchen e.V.**, built with React, Vite, and modern CSS.
 
-Currently, two official plugins are available:
+## 🚀 Technology Stack
+- **Frontend**: React 19 (Vite)
+- **Routing**: React Router v7
+- **SEO**: React Helmet Async
+- **Icons**: Lucide React
+- **Deployment**: Netlify (Git-based CI/CD)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📁 Project Structure
+- `src/components/`: Reusable UI components (Navbar, Footer, Hero, etc.)
+- `src/pages/`: Page-level components (Home, Team, Join, etc.)
+- `src/index.css`: Global design system with CSS Variables (Colors, Spacing, Transitions)
+- `public/`: Static assets (Logo, Sitemap, Robots.txt)
+- `netlify.toml`: Continuous deployment and redirect configuration
 
-## React Compiler
+## ⚖️ Legal Compliance
+The site includes mandatory German legal pages:
+- **Impressum** (Imprint)
+- **Privacy Policy** (Datenschutzerklärung)
+- Mandatory privacy consent fields on all forms.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📈 SEO & Performance
+- Page-specific Canonical tags and Meta titles.
+- Automated Sitemap and Robots.txt generation.
+- Optimized for mobile and desktop viewports.
 
-## Expanding the ESLint configuration
+## 🛠 Development
+```bash
+npm install
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚢 Deployment
+Every push to the `main` branch on GitHub automatically builds and deploys to the live site via Netlify.
