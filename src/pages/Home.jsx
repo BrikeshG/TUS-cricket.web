@@ -43,10 +43,10 @@ const Home = () => {
             <main>
                 <Hero />
 
-                <section className="section-padding">
+                <section className="section-padding reveal">
                     <div className="container">
-                        <div className="trial-cta-container reveal delay-1">
-                            <a href="/join" className="trial-cta-button">
+                        <div className="trial-cta-container">
+                            <a href="/join" className="trial-cta-button fade-in delay-2">
                                 <p className="trial-cta-text">
                                     <span className="trial-cta-icon">✨</span>
                                     Beginner? Come for a FREE trial session!
