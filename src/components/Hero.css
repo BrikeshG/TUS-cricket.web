@@ -36,18 +36,24 @@
 }
 
 .hero-title {
-    font-size: 4rem;
-    font-weight: 800;
+    font-size: var(--font-size-huge);
+    font-weight: var(--weight-black);
     margin-bottom: var(--spacing-md);
     color: var(--color-text);
-    line-height: 1.1;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
 }
 
 .hero-subtitle {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     margin-bottom: var(--spacing-xl);
     color: var(--color-text);
     line-height: 1.6;
+    font-weight: var(--weight-medium);
+    opacity: 0.9;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .hero-actions {
