@@ -1,408 +1,226 @@
-.squad-page {
+.page-squad {
     min-height: 100vh;
     background-color: var(--color-bg);
 }
 
 .squad-loading {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 500;
+    padding: var(--spacing-xxl);
+    text-align: center;
     color: var(--color-text-secondary);
 }
 
-/* Hero Section */
-.squad-hero {
-    background: linear-gradient(rgba(13, 148, 136, 0.9), rgba(13, 148, 136, 0.8)), url('/hero-bg.jpg');
-    background-size: cover;
-    background-position: center;
-    padding: var(--spacing-xxl) 0 var(--spacing-xl);
-    text-align: center;
-    color: white;
-}
-
-.hero-badge {
-    display: inline-block;
-    padding: 6px 14px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(4px);
-    border-radius: var(--radius-full);
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: var(--spacing-md);
-}
-
-.squad-hero-title {
-    font-size: clamp(3rem, 10vw, 5rem);
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    margin-bottom: var(--spacing-sm);
-}
-
-.squad-hero-subtitle {
-    font-size: 1.25rem;
-    opacity: 0.9;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-/* Spotlight Section */
-.spotlight-section {
-    margin-top: -60px;
-    margin-bottom: var(--spacing-2xl);
-}
-
-.spotlight-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background: #FBBF24;
-    color: #92400E;
-    font-weight: 700;
-    border-radius: var(--radius-md);
-    margin-bottom: 12px;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 0.05em;
-    box-shadow: var(--shadow-md);
-}
-
-.spotlight-card {
+/* Team Photos Grid */
+.team-photos-grid {
     display: grid;
-    grid-template-columns: 320px 1fr;
-    background: white;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+    align-items: center;
+}
+
+.team-photo {
     border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-xl);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.spotlight-img {
-    position: relative;
-    height: 400px;
-    background: var(--color-bg-secondary);
-}
-
-.spotlight-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.spotlight-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 5rem;
-    font-weight: 800;
-    color: white;
-    background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
-}
-
-.rank-badge {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    width: 60px;
-    height: 60px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    font-weight: 800;
     box-shadow: var(--shadow-lg);
-    color: var(--color-accent);
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
-.spotlight-info {
-    padding: var(--spacing-xl);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.team-photo:hover {
+    transform: scale(1.02);
 }
 
-.spotlight-name {
-    font-size: 3rem;
-    font-weight: 800;
-    margin-bottom: 12px;
-    letter-spacing: -0.02em;
+/* Section Header */
+.section-header {
+    margin: var(--spacing-xxl) 0 var(--spacing-xl) 0;
 }
 
-.spotlight-tags {
-    display: flex;
-    gap: 8px;
-    margin-bottom: var(--spacing-lg);
-}
-
-.tag {
-    background: rgba(13, 148, 136, 0.1);
-    color: var(--color-accent);
-    padding: 4px 12px;
-    border-radius: var(--radius-full);
-    font-size: 0.75rem;
+.section-header h3 {
+    font-size: 1.75rem;
     font-weight: 700;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-text);
 }
 
-.tag-outline {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 4px 12px;
-    border-radius: var(--radius-full);
-    font-size: 0.75rem;
-    font-weight: 600;
+.section-header p {
     color: var(--color-text-secondary);
-}
-
-.mini-stat {
-    display: flex;
-    flex-direction: column;
-}
-
-.mini-stat .val {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--color-accent);
-}
-
-.mini-stat .lab {
-    font-size: 0.85rem;
-    color: var(--color-text-secondary);
-    text-transform: uppercase;
-    font-weight: 600;
-}
-
-/* Leaders Grid */
-.leaders-section {
-    margin-bottom: var(--spacing-xxl);
-}
-
-.section-label {
     font-size: 1rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--color-text-secondary);
-    margin-bottom: var(--spacing-lg);
-    display: block;
 }
 
-.leaders-grid {
+/* Players Grid */
+.players-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
 }
 
-.leader-card {
-    background: white;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    box-shadow: var(--shadow-md);
-    transition: transform 0.4s var(--ease-out-spring);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.leader-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
-}
-
-.leader-img {
-    position: relative;
-    height: 200px;
-    background: var(--color-bg-secondary);
-}
-
-.leader-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.leader-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: white;
-    background: var(--color-text-secondary);
-}
-
-.leader-rank {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 32px;
-    height: 32px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 0.9rem;
-    box-shadow: var(--shadow-sm);
-}
-
-.leader-body {
-    padding: var(--spacing-md);
-}
-
-.leader-name {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 4px;
-}
-
-.leader-medal {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.85rem;
-    color: var(--color-text-secondary);
-    font-weight: 500;
-}
-
-/* Roster Section */
-.roster-section {
+.player-card {
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
     text-align: center;
-    margin-bottom: var(--spacing-xxl);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: white;
 }
 
-.expand-btn {
+.player-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+.player-avatar-container {
+    position: relative;
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    justify-content: center;
+}
+
+.player-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--color-accent);
+}
+
+.player-avatar-placeholder {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    border: 3px solid var(--color-accent);
+}
+
+.player-badge {
+    position: absolute;
+    top: -5px;
+    right: calc(50% - 60px);
+    font-size: 1.5rem;
+}
+
+.player-info {
+    padding-top: var(--spacing-sm);
+}
+
+.player-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-text);
+}
+
+.player-role {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+/* Show More Button */
+.show-more-btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 14px 28px;
-    background: var(--color-bg-secondary);
-    color: var(--color-text);
+    padding: 12px 28px;
+    background: var(--color-accent);
+    color: white;
     border-radius: var(--radius-full);
     font-weight: 600;
     transition: var(--transition-normal);
+    margin: var(--spacing-lg) 0;
 }
 
-.expand-btn:hover {
-    background: #E8E8ED;
+.show-more-btn:hover {
+    background: var(--color-primary);
+    transform: translateY(-2px);
 }
 
-.roster-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+/* Expanded Roster */
+.expanded-roster {
+    margin-top: var(--spacing-xl);
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Player Stats */
+.player-stats {
+    display: flex;
     gap: var(--spacing-md);
-    text-align: left;
-}
-
-.roster-card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: var(--spacing-md);
-    background: var(--color-bg-secondary);
-    border-radius: var(--radius-md);
-}
-
-.roster-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    overflow: hidden;
-    background: var(--color-text-secondary);
-}
-
-.roster-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.roster-initials {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    color: white;
-    font-weight: 700;
-    font-size: 0.9rem;
-}
-
-.roster-name {
-    font-weight: 600;
-}
-
-.roster-status {
-    font-size: 0.8rem;
-    color: var(--color-text-secondary);
-}
-
-/* Empty State */
-.squad-empty {
-    text-align: center;
-    padding: var(--spacing-xxl);
-    background: var(--color-bg-secondary);
-    border-radius: var(--radius-lg);
-    margin-bottom: var(--spacing-xl);
-}
-
-.empty-icon {
-    color: var(--color-accent);
-    margin-bottom: var(--spacing-md);
-    opacity: 0.5;
-}
-
-/* Identity Section */
-.identity-section {
-    padding: var(--spacing-xxl) 0;
+    margin-top: var(--spacing-sm);
+    padding-top: var(--spacing-sm);
     border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.identity-header {
-    text-align: center;
-    margin-bottom: var(--spacing-xl);
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.identity-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--spacing-lg);
-}
-
-.id-card {
-    text-align: center;
-    padding: var(--spacing-lg);
-}
-
-.id-icon {
+.stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
     color: var(--color-accent);
-    margin-bottom: var(--spacing-md);
-    width: 40px;
-    height: 40px;
 }
 
-/* Mobile */
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Empty State */
+.empty-state {
+    padding: var(--spacing-xxl);
+    text-align: center;
+    color: var(--color-text-secondary);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    margin-top: var(--spacing-xl);
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
-    .spotlight-card {
+    .team-photos-grid {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
 
-    .spotlight-img {
-        height: 300px;
+    .players-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
     }
 
-    .spotlight-name {
-        font-size: 2.25rem;
+    .player-avatar,
+    .player-avatar-placeholder {
+        width: 80px;
+        height: 80px;
+        font-size: 1.5rem;
     }
 
-    .leaders-grid {
-        grid-template-columns: 1fr;
+    .player-stats {
+        gap: var(--spacing-sm);
+    }
+
+    .stat-value {
+        font-size: 1rem;
     }
 }
