@@ -69,7 +69,10 @@ const Dashboard = () => {
             .delete()
             .eq('id', id);
 
-        if (!error) {
+        if (error) {
+            console.error('Delete error:', error);
+            alert('Failed to delete player: ' + error.message);
+        } else {
             loadPlayers();
         }
     };
@@ -80,7 +83,10 @@ const Dashboard = () => {
             .update({ is_active: !player.is_active })
             .eq('id', player.id);
 
-        if (!error) {
+        if (error) {
+            console.error('Update error:', error);
+            alert('Failed to update player: ' + error.message);
+        } else {
             loadPlayers();
         }
     };
