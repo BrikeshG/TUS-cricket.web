@@ -1,9 +1,9 @@
 const { createClient } = require('@supabase/supabase-js');
+const fetch = require('node-fetch');
 const cheerio = require('cheerio');
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 const CLUB_ID = '40958';
 const T20_TEAM_ID = '1487';
@@ -13,8 +13,13 @@ exports.handler = async (event, context) => {
     try {
         console.log('Starting CricClubs stats fetch...');
 
+        // Initialize Supabase client
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
         // Fetch stats from both leagues
+        console.log('Fetching T20 stats...');
         const t20Stats = await fetchTeamStats(T20_TEAM_ID);
+        console.log('Fetching 50-over stats...');
         const fiftyStats = await fetchTeamStats(FIFTY_TEAM_ID);
 
         // Get name mappings from Supabase
@@ -31,6 +36,11 @@ exports.handler = async (event, context) => {
 
         // Combine stats and update database
         const combinedStats = combineStats(t20Stats, fiftyStats, mappingMap);
+
+        console.log(`Updating ${Object.keys(combinedStats).length} players...`);
+
+        let successCount = 0;
+        let errorCount = 0;
 
         for (const playerName in combinedStats) {
             const stats = combinedStats[playerName];
@@ -60,15 +70,23 @@ exports.handler = async (event, context) => {
 
             if (error) {
                 console.error(`Error updating ${playerName}:`, error);
+                errorCount++;
+            } else {
+                successCount++;
             }
         }
 
         return {
             statusCode: 200,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
             body: JSON.stringify({
                 success: true,
                 message: 'Stats updated successfully',
-                playersUpdated: Object.keys(combinedStats).length
+                playersUpdated: successCount,
+                errors: errorCount
             })
         };
 
@@ -76,14 +94,19 @@ exports.handler = async (event, context) => {
         console.error('Error fetching stats:', error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: error.message })
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify({
+                success: false,
+                error: error.message
+            })
         };
     }
 };
 
 async function fetchTeamStats(teamId) {
-    const baseUrl = `https://cricclubs.com/BayerischerCricketVerbandeV/viewTeam.do?teamId=${teamId}&clubId=${CLUB_ID}`;
-
     const stats = {
         batting: {},
         bowling: {},
@@ -92,52 +115,58 @@ async function fetchTeamStats(teamId) {
 
     try {
         // Fetch batting stats
-        const battingResponse = await fetch(baseUrl);
-        const battingHtml = await battingResponse.text();
-        const $batting = cheerio.load(battingHtml);
+        const battingUrl = `https://cricclubs.com/BayerischerCricketVerbandeV/viewTeam.do?teamId=${teamId}&clubId=${CLUB_ID}`;
+        console.log(`Fetching from: ${battingUrl}`);
 
-        // Parse batting table
-        $batting('table.table-responsive tbody tr').each((i, row) => {
-            const cells = $batting(row).find('td');
-            if (cells.length > 0) {
-                const name = $batting(cells[0]).text().trim();
-                const matches = parseInt($batting(cells[1]).text().trim()) || 0;
-                const runs = parseInt($batting(cells[4]).text().trim()) || 0;
-
-                if (name && name !== 'Player') {
-                    stats.batting[name] = { runs, matches };
-                }
+        const response = await fetch(battingUrl, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
             }
         });
 
-        // Fetch bowling stats (same page, different tab - we'll parse from same HTML)
-        $batting('table.table-responsive tbody tr').each((i, row) => {
-            const cells = $batting(row).find('td');
-            if (cells.length > 0) {
-                const name = $batting(cells[0]).text().trim();
-                const wickets = parseInt($batting(cells[4]).text().trim()) || 0;
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-                if (name && name !== 'Player') {
-                    stats.bowling[name] = { wickets };
-                }
+        const html = await response.text();
+        const $ = cheerio.load(html);
+
+        // Parse batting stats - look for the batting table
+        $('table').each((tableIndex, table) => {
+            const $table = $(table);
+            const headers = [];
+
+            // Get headers
+            $table.find('thead tr th, thead tr td').each((i, th) => {
+                headers.push($(th).text().trim().toLowerCase());
+            });
+
+            // Check if this is the batting table
+            if (headers.includes('player') || headers.includes('name')) {
+                $table.find('tbody tr').each((i, row) => {
+                    const cells = $(row).find('td');
+                    if (cells.length > 0) {
+                        const name = $(cells[0]).text().trim();
+
+                        // Skip header rows and empty names
+                        if (name && name !== 'Player' && name !== 'Name') {
+                            // Try to find runs and matches columns
+                            const matches = parseInt($(cells[1]).text().trim()) || 0;
+                            const runs = parseInt($(cells[4]).text().trim()) || 0;
+
+                            if (runs > 0 || matches > 0) {
+                                stats.batting[name] = { runs, matches };
+                            }
+                        }
+                    }
+                });
             }
         });
 
-        // Fetch fielding stats
-        $batting('table.table-responsive tbody tr').each((i, row) => {
-            const cells = $batting(row).find('td');
-            if (cells.length > 0) {
-                const name = $batting(cells[0]).text().trim();
-                const catches = parseInt($batting(cells[1]).text().trim()) || 0;
-
-                if (name && name !== 'Player') {
-                    stats.fielding[name] = { catches };
-                }
-            }
-        });
+        console.log(`Found ${Object.keys(stats.batting).length} players with batting stats`);
 
     } catch (error) {
-        console.error(`Error fetching stats for team ${teamId}:`, error);
+        console.error(`Error fetching stats for team ${teamId}:`, error.message);
     }
 
     return stats;
