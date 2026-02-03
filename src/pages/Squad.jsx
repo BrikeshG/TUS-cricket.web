@@ -10,6 +10,7 @@ const Squad = () => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [loading, setLoading] = useState(true);
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+    const [selectedSeason, setSelectedSeason] = useState('2025');
 
     const teamPhotos = [
         { src: '/team/team-lineup.jpg', alt: 'TUS Cricket Team Lineup' },
@@ -99,8 +100,22 @@ const Squad = () => {
                     ) : players.length > 0 ? (
                         <>
                             <div className="section-header">
-                                <h3>2026 Season Leaders</h3>
-                                <p>Our top performers this season</p>
+                                <div className="header-content">
+                                    <h3>{selectedSeason} Season Leaders</h3>
+                                    <p>Our top performers this season</p>
+                                </div>
+                                <div className="season-selector">
+                                    <label htmlFor="season">Season:</label>
+                                    <select
+                                        id="season"
+                                        value={selectedSeason}
+                                        onChange={(e) => setSelectedSeason(e.target.value)}
+                                        className="season-dropdown"
+                                    >
+                                        <option value="2025">2025</option>
+                                        <option value="2026">2026</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div className="players-grid">

@@ -70,19 +70,64 @@
 
 /* Section Header */
 .section-header {
-    margin: var(--spacing-xxl) 0 var(--spacing-xl) 0;
+    margin-bottom: var(--spacing-xl);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.header-content {
+    flex: 1;
 }
 
 .section-header h3 {
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-weight: 700;
     margin-bottom: var(--spacing-xs);
-    color: var(--color-text);
 }
 
 .section-header p {
     color: var(--color-text-secondary);
+}
+
+/* Season Selector */
+.season-selector {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    background: white;
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.season-selector label {
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+}
+
+.season-dropdown {
+    padding: 6px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
     font-size: 1rem;
+    color: var(--color-accent);
+    cursor: pointer;
+    transition: var(--transition-normal);
+}
+
+.season-dropdown:hover {
+    border-color: var(--color-accent);
+}
+
+.season-dropdown:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
 }
 
 /* Players Grid */
@@ -237,6 +282,20 @@
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+    .section-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .season-selector {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .carousel-container {
+        height: 300px;
+    }
+
     .team-photos-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
