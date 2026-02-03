@@ -4,10 +4,18 @@ import { supabase } from '../lib/supabase';
 import { Flame, Users, Globe, ChevronDown } from 'lucide-react';
 import './Squad.css';
 
+
 const Squad = () => {
     const [players, setPlayers] = useState([]);
     const [isExpanded, setIsExpanded] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+
+    const teamPhotos = [
+        { src: '/team/team-group.jpg', alt: 'TUS Cricket Team Group' },
+        { src: '/team/team-lineup.jpg', alt: 'TUS Cricket Team Lineup' },
+        { src: '/team/team-group.jpg', alt: 'TUS Cricket Team Action' } // Add a 3rd photo here
+    ];
 
     useEffect(() => {
         const fetchPlayers = async () => {
@@ -31,6 +39,14 @@ const Squad = () => {
         fetchPlayers();
     }, []);
 
+    const nextPhoto = () => {
+        setCurrentPhotoIndex((prev) => (prev + 1) % teamPhotos.length);
+    };
+
+    const goToPhoto = (index) => {
+        setCurrentPhotoIndex(index);
+    };
+
     const getInitials = (name) => {
         return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
     };
@@ -50,18 +66,31 @@ const Squad = () => {
                 <div className="container text-center">
                     <h2 className="mb-4">Meet The Squad</h2>
 
-                    {/* Team Photos */}
-                    <div className="team-photos-grid">
-                        <img
-                            src="/team/team-group.jpg"
-                            alt="TUS Cricket Team Group"
-                            className="team-photo"
-                        />
-                        <img
-                            src="/team/team-lineup.jpg"
-                            alt="TUS Cricket Team Lineup"
-                            className="team-photo"
-                        />
+                    {/* Team Photos Carousel */}
+                    <div className="team-carousel">
+                        <div className="carousel-container" onClick={nextPhoto}>
+                            {teamPhotos.map((photo, index) => (
+                                <img
+                                    key={index}
+                                    src={photo.src}
+                                    alt={photo.alt}
+                                    className={`carousel-photo ${index === currentPhotoIndex ? 'active' : ''}`}
+                                />
+                            ))}
+                        </div>
+                        <div className="carousel-dots">
+                            {teamPhotos.map((_, index) => (
+                                <button
+                                    key={index}
+                                    className={`dot ${index === currentPhotoIndex ? 'active' : ''}`}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        goToPhoto(index);
+                                    }}
+                                    aria-label={`Go to photo ${index + 1}`}
+                                />
+                            ))}
+                        </div>
                     </div>
 
                     {/* Top Performers Section */}
