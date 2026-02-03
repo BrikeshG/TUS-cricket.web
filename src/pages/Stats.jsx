@@ -125,7 +125,7 @@ const Stats = () => {
             <main className="stats-content">
                 <div className="container">
                     {/* Highlight Cards */}
-                    <section className="stats-highlights reveal delay-3">
+                    <section className="stats-highlights">
                         <div className="highlight-card orange-cap">
                             <div className="highlight-icon">🏏</div>
                             <div className="highlight-label">Orange Cap</div>
@@ -148,14 +148,14 @@ const Stats = () => {
 
                     {/* Squad List */}
                     <section className="squad-section">
-                        <h2 className="section-title reveal delay-4">Current Squad</h2>
+                        <h2 className="section-title">Current Squad</h2>
 
                         {players.length === 0 ? (
-                            <div className="empty-state reveal delay-5">
+                            <div className="empty-state">
                                 <p>No players added yet. Add players via the Admin Panel.</p>
                             </div>
                         ) : (
-                            <div className="squad-grid reveal delay-5">
+                            <div className="squad-grid">
                                 {players.map((player) => (
                                     <div key={player.id} className="player-card">
                                         <div className="player-avatar">
@@ -175,7 +175,7 @@ const Stats = () => {
                     </section>
 
                     {/* Info Banner */}
-                    <section className="stats-info reveal delay-6">
+                    <section className="stats-info">
                         <div className="info-card">
                             <h3>📊 Stats Coming Soon!</h3>
                             <p>
