@@ -19,6 +19,7 @@ const Footer = () => {
                 <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                     <NavLink to="/impressum" style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '0.8rem' }}>Impressum</NavLink>
                     <NavLink to="/privacy" style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '0.8rem' }}>Privacy</NavLink>
+                    <NavLink to="/admin" style={{ color: 'rgba(255, 255, 255, 0.4)', fontSize: '0.7rem', opacity: 0.5 }}>Admin</NavLink>
                     <div style={{ width: '1px', height: '12px', background: 'rgba(255, 255, 255, 0.2)', margin: '0 0.25rem' }}></div>
                     <a
                         href="https://www.instagram.com/pfarrkirchen_cricket/"
