@@ -21,6 +21,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://tus-cricket-pfarrkirchen.de/stats</loc>
+    <lastmod>2026-02-03</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://tus-cricket-pfarrkirchen.de/impressum</loc>
     <lastmod>2026-01-31</lastmod>
     <priority>0.3</priority>

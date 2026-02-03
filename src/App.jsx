@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Join from './pages/Join';
 import Team from './pages/Team';
 import Contact from './pages/Contact';
+import Stats from './pages/Stats';
 import ScrollToTop from './components/ScrollToTop';
 import Success from './pages/Success';
 import Impressum from './pages/Impressum';
@@ -22,6 +23,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/join" element={<Join />} />
           <Route path="/team" element={<Team />} />
+          <Route path="/stats" element={<Stats />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/success" element={<Success />} />
           <Route path="/impressum" element={<Impressum />} />
