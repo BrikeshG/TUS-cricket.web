@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { signOut, getCurrentUser } from '../../lib/auth';
 import { supabase } from '../../lib/supabase';
 import { LogOut, Plus, Edit2, Trash2, Upload } from 'lucide-react';
+import Mappings from './Mappings';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -13,6 +14,7 @@ const Dashboard = () => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [editingPlayer, setEditingPlayer] = useState(null);
     const [newPlayerName, setNewPlayerName] = useState('');
+    const [activeTab, setActiveTab] = useState('players');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -108,61 +110,83 @@ const Dashboard = () => {
             {/* Main Content */}
             <main className="admin-content">
                 <div className="container">
-                    <div className="actions-bar">
-                        <h2>Squad Members ({players.length})</h2>
-                        <button onClick={() => setShowAddModal(true)} className="add-btn">
-                            <Plus size={18} /> Add Player
+                    {/* Tabs */}
+                    <div className="tabs">
+                        <button
+                            className={`tab ${activeTab === 'players' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('players')}
+                        >
+                            Players
+                        </button>
+                        <button
+                            className={`tab ${activeTab === 'mappings' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('mappings')}
+                        >
+                            Name Mappings
                         </button>
                     </div>
 
-                    {loading ? (
-                        <div className="loading">Loading players...</div>
+                    {activeTab === 'players' ? (
+                        <>
+                            <div className="actions-bar">
+                                <h2>Squad Members ({players.length})</h2>
+                                <button onClick={() => setShowAddModal(true)} className="add-btn">
+                                    <Plus size={18} /> Add Player
+                                </button>
+                            </div>
+
+                            {loading ? (
+                                <div className="loading">Loading players...</div>
+                            ) : (
+                                <div className="players-table-container">
+                                    <table className="players-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Status</th>
+                                                <th>Photo</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {players.map((player) => (
+                                                <tr key={player.id}>
+                                                    <td className="player-name">{player.name}</td>
+                                                    <td>
+                                                        <button
+                                                            onClick={() => handleToggleActive(player)}
+                                                            className={`status-badge ${player.is_active ? 'active' : 'inactive'}`}
+                                                        >
+                                                            {player.is_active ? 'Active' : 'Inactive'}
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        {player.photo_url ? (
+                                                            <span className="has-photo">✓ Has Photo</span>
+                                                        ) : (
+                                                            <span className="no-photo">No Photo</span>
+                                                        )}
+                                                    </td>
+                                                    <td>
+                                                        <div className="action-buttons">
+                                                            <button
+                                                                onClick={() => handleDeletePlayer(player.id)}
+                                                                className="delete-btn"
+                                                                title="Delete"
+                                                            >
+                                                                <Trash2 size={16} />
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </>
                     ) : (
-                        <div className="players-table-container">
-                            <table className="players-table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Status</th>
-                                        <th>Photo</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {players.map((player) => (
-                                        <tr key={player.id}>
-                                            <td className="player-name">{player.name}</td>
-                                            <td>
-                                                <button
-                                                    onClick={() => handleToggleActive(player)}
-                                                    className={`status-badge ${player.is_active ? 'active' : 'inactive'}`}
-                                                >
-                                                    {player.is_active ? 'Active' : 'Inactive'}
-                                                </button>
-                                            </td>
-                                            <td>
-                                                {player.photo_url ? (
-                                                    <span className="has-photo">✓ Has Photo</span>
-                                                ) : (
-                                                    <span className="no-photo">No Photo</span>
-                                                )}
-                                            </td>
-                                            <td>
-                                                <div className="action-buttons">
-                                                    <button
-                                                        onClick={() => handleDeletePlayer(player.id)}
-                                                        className="delete-btn"
-                                                        title="Delete"
-                                                    >
-                                                        <Trash2 size={16} />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                        <Mappings />
                     )}
                 </div>
             </main>

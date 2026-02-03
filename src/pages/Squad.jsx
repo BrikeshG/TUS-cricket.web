@@ -120,11 +120,11 @@ const Squad = () => {
                                             <h4 className="player-name">{player.name}</h4>
                                             <div className="player-stats">
                                                 <div className="stat-item">
-                                                    <span className="stat-value">--</span>
+                                                    <span className="stat-value">{player.total_runs || 0}</span>
                                                     <span className="stat-label">Runs</span>
                                                 </div>
                                                 <div className="stat-item">
-                                                    <span className="stat-value">--</span>
+                                                    <span className="stat-value">{player.total_wickets || 0}</span>
                                                     <span className="stat-label">Wickets</span>
                                                 </div>
                                             </div>
@@ -157,11 +157,11 @@ const Squad = () => {
                                                     <h4 className="player-name">{player.name}</h4>
                                                     <div className="player-stats">
                                                         <div className="stat-item">
-                                                            <span className="stat-value">--</span>
+                                                            <span className="stat-value">{player.total_runs || 0}</span>
                                                             <span className="stat-label">Runs</span>
                                                         </div>
                                                         <div className="stat-item">
-                                                            <span className="stat-value">--</span>
+                                                            <span className="stat-value">{player.total_wickets || 0}</span>
                                                             <span className="stat-label">Wickets</span>
                                                         </div>
                                                     </div>
