@@ -1,6 +1,9 @@
 const { createClient } = require('@supabase/supabase-js');
-const fetch = require('node-fetch');
 const cheerio = require('cheerio');
+
+// More robust fetch import for Netlify/esbuild
+const nodeFetch = require('node-fetch');
+const fetch = typeof globalThis.fetch === 'function' ? globalThis.fetch : nodeFetch;
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
@@ -17,9 +20,10 @@ exports.handler = async (event, context) => {
         const supabase = createClient(supabaseUrl, supabaseKey);
 
         // Fetch stats from both leagues
-        console.log('Fetching T20 stats...');
+        console.log(`Using fetch: ${typeof fetch}`);
+        console.log(`Fetching T20 stats for team ${T20_TEAM_ID}...`);
         const t20Stats = await fetchTeamStats(T20_TEAM_ID);
-        console.log('Fetching 50-over stats...');
+        console.log(`Fetching 50-over stats for team ${FIFTY_TEAM_ID}...`);
         const fiftyStats = await fetchTeamStats(FIFTY_TEAM_ID);
 
         // Get name mappings from Supabase
