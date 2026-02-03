@@ -5,7 +5,7 @@
 
 /* Header */
 .stats-header {
-    background: linear-gradient(135deg, #0071E3 0%, #00C6FB 100%);
+    background: linear-gradient(135deg, #0D9488 0%, #10B981 100%);
     padding: var(--spacing-xxl) 0 var(--spacing-lg);
     text-align: center;
     color: white;
@@ -49,7 +49,7 @@
 
 .season-btn.active {
     background: white;
-    color: var(--color-primary);
+    color: var(--color-accent);
     border-color: white;
 }
 
@@ -79,15 +79,15 @@
 }
 
 .highlight-card.orange-cap {
-    background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+    background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
 }
 
 .highlight-card.purple-cap {
-    background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 100%);
+    background: linear-gradient(135deg, #7C3AED 0%, #8B5CF6 100%);
 }
 
 .highlight-card.mvp {
-    background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+    background: linear-gradient(135deg, #0D9488 0%, #10B981 100%);
 }
 
 .highlight-icon {
@@ -150,7 +150,7 @@
     border-radius: 50%;
     margin: 0 auto var(--spacing-sm);
     overflow: hidden;
-    background: var(--color-primary);
+    background: linear-gradient(135deg, #0D9488 0%, #10B981 100%);
     display: flex;
     align-items: center;
     justify-content: center;

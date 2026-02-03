@@ -100,14 +100,14 @@ const Stats = () => {
 
             <header className="stats-header">
                 <div className="container">
-                    <h1 className="stats-title reveal">Player Statistics</h1>
-                    <p className="stats-subtitle reveal delay-1">
+                    <h1 className="stats-title">Player Statistics</h1>
+                    <p className="stats-subtitle">
                         Track our players' performance across seasons
                     </p>
 
                     {/* Season Selector */}
                     {seasons.length > 0 && (
-                        <div className="season-selector reveal delay-2">
+                        <div className="season-selector">
                             {seasons.map((season) => (
                                 <button
                                     key={season.id}
