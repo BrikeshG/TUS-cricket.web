@@ -11,23 +11,27 @@
 
 /* Team Photos Grid */
 .team-photos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-bottom: 4rem;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xxl);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .team-photo {
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
     width: 100%;
+    height: auto;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .team-photo:hover {
-    transform: scale(1.02);
+    transform: translateY(-4px);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.18);
 }
 
 /* Section Header */
