@@ -1,12 +1,11 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Join from './pages/Join';
-import Team from './pages/Team';
+import Squad from './pages/Squad';
 import Contact from './pages/Contact';
-import Stats from './pages/Stats';
 import ScrollToTop from './components/ScrollToTop';
 import Success from './pages/Success';
 import Impressum from './pages/Impressum';
@@ -22,8 +21,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/join" element={<Join />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/stats" element={<Stats />} />
+          <Route path="/squad" element={<Squad />} />
+          <Route path="/team" element={<Navigate to="/squad" replace />} />
+          <Route path="/stats" element={<Navigate to="/squad" replace />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/success" element={<Success />} />
           <Route path="/impressum" element={<Impressum />} />

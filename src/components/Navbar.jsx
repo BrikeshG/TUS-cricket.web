@@ -26,8 +26,7 @@ const Navbar = () => {
                 {/* Desktop Menu */}
                 <div className="navbar-links">
                     <NavLink to="/" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Home</NavLink>
-                    <NavLink to="/team" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Team</NavLink>
-                    <NavLink to="/stats" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Stats</NavLink>
+                    <NavLink to="/squad" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Squad</NavLink>
                     <NavLink to="/join" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Join Us</NavLink>
                     <NavLink to="/contact" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Contact</NavLink>
                 </div>
@@ -44,8 +43,7 @@ const Navbar = () => {
                 {/* Mobile Menu */}
                 <div className={`mobile-menu glass ${isOpen ? 'active' : ''}`}>
                     <NavLink to="/" onClick={() => setIsOpen(false)} className="mobile-nav-link">Home</NavLink>
-                    <NavLink to="/team" onClick={() => setIsOpen(false)} className="mobile-nav-link">Team</NavLink>
-                    <NavLink to="/stats" onClick={() => setIsOpen(false)} className="mobile-nav-link">Stats</NavLink>
+                    <NavLink to="/squad" onClick={() => setIsOpen(false)} className="mobile-nav-link">Squad</NavLink>
                     <NavLink to="/join" onClick={() => setIsOpen(false)} className="mobile-nav-link">Join Us</NavLink>
                     <NavLink to="/contact" onClick={() => setIsOpen(false)} className="mobile-nav-link">Contact</NavLink>
                 </div>
