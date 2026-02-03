@@ -12,7 +12,7 @@ const Squad = () => {
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
     const teamPhotos = [
-        { src: '/team/team-selfie.jpg', alt: 'TUS Cricket Team Selfie' },
+        { src: '/team/team-dinner.jpg', alt: 'TUS Cricket Team Dinner' },
         { src: '/team/team-lineup.jpg', alt: 'TUS Cricket Team Lineup' },
         { src: '/team/team-group.jpg', alt: 'TUS Cricket Team Group' }
     ];
