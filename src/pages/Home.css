@@ -151,4 +151,18 @@
     .training-card {
         padding: 1.5rem;
     }
+
+    /* Minimized Trial CTA for mobile */
+    .trial-cta-button {
+        padding: 0.75rem 1.25rem;
+    }
+
+    .trial-cta-text {
+        font-size: 0.9rem;
+        gap: 0.4rem;
+    }
+
+    .trial-cta-icon {
+        font-size: 1rem;
+    }
 }
