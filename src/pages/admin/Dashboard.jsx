@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { signOut, getCurrentUser } from '../../lib/auth';
 import { supabase } from '../../lib/supabase';
-import { LogOut, Plus, Edit2, Trash2, Upload } from 'lucide-react';
+import { LogOut, Plus, Edit2, Trash2, Upload, BarChart2, RefreshCw } from 'lucide-react';
 import Mappings from './Mappings';
 import './Dashboard.css';
 
@@ -15,6 +15,15 @@ const Dashboard = () => {
     const [editingPlayer, setEditingPlayer] = useState(null);
     const [newPlayerName, setNewPlayerName] = useState('');
     const [activeTab, setActiveTab] = useState('players');
+
+    // Sync Stats State
+    const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
+    const [syncLoading, setSyncLoading] = useState(false);
+    const [syncStatus, setSyncStatus] = useState({ type: '', message: '' });
+    const [statsPastedData, setStatsPastedData] = useState('');
+    const [syncFormat, setSyncFormat] = useState('T20');
+    const [syncSeason, setSyncSeason] = useState(new Date().getFullYear().toString());
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -35,7 +44,9 @@ const Dashboard = () => {
             .select('*')
             .order('name');
 
-        if (!error && data) {
+        if (error) {
+            console.error('Error loading players:', error);
+        } else if (data) {
             setPlayers(data);
         }
         setLoading(false);
@@ -54,7 +65,10 @@ const Dashboard = () => {
             .from('squad')
             .insert([{ name: newPlayerName.trim(), is_active: true }]);
 
-        if (!error) {
+        if (error) {
+            console.error('Error adding player:', error);
+            alert('Failed to add player: ' + error.message);
+        } else {
             setNewPlayerName('');
             setShowAddModal(false);
             loadPlayers();
@@ -79,8 +93,8 @@ const Dashboard = () => {
 
     const handleToggleActive = async (player) => {
         const { error } = await supabase
-            .from('squad')
             .update({ is_active: !player.is_active })
+            .from('squad')
             .eq('id', player.id);
 
         if (error) {
@@ -88,6 +102,103 @@ const Dashboard = () => {
             alert('Failed to update player: ' + error.message);
         } else {
             loadPlayers();
+        }
+    };
+
+    const handleSyncSubmit = async () => {
+        if (!statsPastedData.trim()) {
+            setSyncStatus({ type: 'error', message: 'Please paste the stats data first.' });
+            return;
+        }
+
+        setSyncLoading(true);
+        setSyncStatus({ type: '', message: '' });
+
+        try {
+            const lines = statsPastedData.split('\n');
+            const parsedData = [];
+
+            lines.forEach(line => {
+                const parts = line.split('\t').map(p => p.trim()).filter(p => p !== '');
+                if (parts.length < 5) return;
+
+                const nameCandidate = parts[1];
+                if (nameCandidate && nameCandidate !== 'Player' && nameCandidate !== 'Total' && isNaN(nameCandidate)) {
+                    let runs = 0, wickets = 0, matches = 0;
+
+                    if (parts.length >= 10 && parts.some(p => p.includes('.'))) { // likely bowling
+                        matches = parseInt(parts[3]) || 0;
+                        wickets = parseInt(parts[7]) || 0;
+                    } else { // likely batting
+                        matches = parseInt(parts[3]) || 0;
+                        runs = parseInt(parts[6]) || 0;
+                    }
+
+                    parsedData.push({
+                        name: nameCandidate,
+                        matches,
+                        runs,
+                        wickets,
+                        catches: 0
+                    });
+                }
+            });
+
+            if (parsedData.length === 0) {
+                throw new Error("Could not find any player stats in the pasted text.");
+            }
+
+            // Get sync token from env
+            const syncToken = import.meta.env.VITE_SYNC_TOKEN;
+
+            const response = await fetch('/.netlify/functions/fetch-cricclubs-stats', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    season: syncSeason,
+                    format: syncFormat,
+                    statsData: parsedData,
+                    token: syncToken // Secure token check
+                })
+            });
+
+            if (!response.ok) {
+                const text = await response.text();
+                // Try to parse JSON error if possible, otherwise use status text
+                try {
+                    const json = JSON.parse(text);
+                    throw new Error(json.error || `Server error: ${response.status} ${response.statusText}`);
+                } catch (e) {
+                    // If we're on localhost and get a 404, it's likely the function isn't running
+                    if (response.status === 404 && window.location.hostname === 'localhost') {
+                        throw new Error("Sync service not available locally. Please deploy to Netlify to test this feature.");
+                    }
+                    throw new Error(`Sync failed (${response.status}): ${response.statusText || 'Unknown error'}`);
+                }
+            }
+
+            const result = await response.json();
+
+            if (result.success) {
+                setSyncStatus({
+                    type: 'success',
+                    message: `Successfully updated ${result.results.success} records!`
+                });
+                setTimeout(() => {
+                    setIsSyncModalOpen(false);
+                    setSyncStatus({ type: '', message: '' });
+                    setStatsPastedData('');
+                }, 2000);
+            } else {
+                throw new Error(result.error || "Failed to update stats");
+            }
+
+        } catch (err) {
+            setSyncStatus({ type: 'error', message: err.message });
+        } finally {
+            setSyncLoading(false);
         }
     };
 
@@ -129,6 +240,12 @@ const Dashboard = () => {
                             onClick={() => setActiveTab('mappings')}
                         >
                             Name Mappings
+                        </button>
+                        <button
+                            className={`tab ${activeTab === 'stats' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('stats')}
+                        >
+                            Statistics
                         </button>
                     </div>
 
@@ -191,8 +308,26 @@ const Dashboard = () => {
                                 </div>
                             )}
                         </>
-                    ) : (
+                    ) : activeTab === 'mappings' ? (
                         <Mappings />
+                    ) : (
+                        <div className="stats-tab-container">
+                            <div className="stats-card">
+                                <div className="stats-card-header">
+                                    <h3>CricClubs Player Stats Sync</h3>
+                                    <p>Manually update player statistics by pasting data from CricClubs.</p>
+                                </div>
+                                <div className="stats-actions">
+                                    <button
+                                        className="sync-now-btn"
+                                        onClick={() => setIsSyncModalOpen(true)}
+                                    >
+                                        <RefreshCw size={20} />
+                                        Sync Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     )}
                 </div>
             </main>
@@ -224,6 +359,80 @@ const Dashboard = () => {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Sync Stats Modal */}
+            {isSyncModalOpen && (
+                <div className="sync-modal-overlay">
+                    <div className="sync-modal">
+                        <div className="sync-modal-header">
+                            <h3>Sync Stats with CricClubs</h3>
+                            <button className="close-modal" onClick={() => setIsSyncModalOpen(false)}>&times;</button>
+                        </div>
+
+                        <div className="sync-instructions">
+                            <p>Copy and paste statistics from CricClubs to update the website.</p>
+                            <div className="sync-links">
+                                <a href="https://cricclubs.com/BayerischerCricketVerbandeV/teamBatting.do?teamId=1487&clubId=40958" target="_blank" rel="noopener noreferrer" className="sync-link">T20 Batting</a>
+                                <a href="https://cricclubs.com/BayerischerCricketVerbandeV/teamBowling.do?teamId=1487&clubId=40958" target="_blank" rel="noopener noreferrer" className="sync-link">T20 Bowling</a>
+                            </div>
+                        </div>
+
+                        <div className="sync-form-group">
+                            <div style={{ display: 'flex', gap: '15px', marginBottom: '15px' }}>
+                                <div style={{ flex: 1 }}>
+                                    <label>Season</label>
+                                    <select
+                                        value={syncSeason}
+                                        onChange={(e) => setSyncSeason(e.target.value)}
+                                        className="season-dropdown"
+                                        style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #d1d5db' }}
+                                    >
+                                        <option value="2025">2025</option>
+                                        <option value="2026">2026</option>
+                                    </select>
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    <label>Format</label>
+                                    <select
+                                        value={syncFormat}
+                                        onChange={(e) => setSyncFormat(e.target.value)}
+                                        className="season-dropdown"
+                                        style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #d1d5db' }}
+                                    >
+                                        <option value="T20">T20</option>
+                                        <option value="Fifty">50-Over</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <label>Paste Table Data Here</label>
+                            <textarea
+                                className="sync-textarea"
+                                placeholder="Paste CricClubs table here (including player names)..."
+                                value={statsPastedData}
+                                onChange={(e) => setStatsPastedData(e.target.value)}
+                            ></textarea>
+                        </div>
+
+                        {syncStatus.message && (
+                            <div className={`sync-status ${syncStatus.type}`}>
+                                {syncStatus.message}
+                            </div>
+                        )}
+
+                        <div className="sync-actions">
+                            <button className="btn-secondary" onClick={() => setIsSyncModalOpen(false)}>Cancel</button>
+                            <button
+                                className="btn-primary"
+                                onClick={handleSyncSubmit}
+                                disabled={syncLoading}
+                            >
+                                {syncLoading ? 'Syncing...' : 'Update Stats'}
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

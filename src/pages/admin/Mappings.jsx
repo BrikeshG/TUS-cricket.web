@@ -24,7 +24,9 @@ const Mappings = () => {
             .select('*')
             .order('source_name');
 
-        if (!error && data) {
+        if (error) {
+            console.error('Error loading mappings:', error);
+        } else if (data) {
             setMappings(data);
         }
         setLoading(false);
@@ -41,7 +43,10 @@ const Mappings = () => {
                 target_name: targetName.trim()
             }]);
 
-        if (!error) {
+        if (error) {
+            console.error('Error adding mapping:', error);
+            alert('Failed to add mapping: ' + error.message);
+        } else {
             setSourceName('');
             setTargetName('');
             setShowAddModal(false);
@@ -71,9 +76,24 @@ const Mappings = () => {
             const result = await response.json();
 
             if (result.success) {
-                alert(`Stats updated successfully! ${result.playersUpdated} players updated.`);
+                let msg = `Sync completed!\n- Players updated: ${result.playersUpdated}\n- Total players found: ${result.totalFound}`;
+
+                if (result.diagnostics) {
+                    msg += `\n\nDiagnostics (Found):`;
+                    msg += `\nT20: Batting(${result.diagnostics.t20.batting}), Bowling(${result.diagnostics.t20.bowling}), Fielding(${result.diagnostics.t20.fielding})`;
+                    msg += `\n50-Over: Batting(${result.diagnostics.fifty.batting}), Bowling(${result.diagnostics.fifty.bowling}), Fielding(${result.diagnostics.fifty.fielding})`;
+                }
+
+                if (result.errors && result.errors.length > 0) {
+                    msg += `\n\nErrors (first 3):\n${result.errors.slice(0, 3).join('\n')}`;
+                }
+
+                alert(msg);
+                if (result.playersUpdated > 0) {
+                    // Could refresh other data if needed
+                }
             } else {
-                alert('Error updating stats. Check console for details.');
+                alert('Error updating stats: ' + (result.error || 'Unknown error'));
             }
         } catch (error) {
             console.error('Error syncing stats:', error);
