@@ -41,6 +41,14 @@ const Footer = () => {
                     </a>
                 </div>
             </div>
+            <p style={{
+                margin: '0.75rem 0 0 0',
+                color: 'rgba(255, 255, 255, 0.4)',
+                fontSize: '0.7rem',
+                textAlign: 'center'
+            }}>
+                Website by Brikesh V. Gowrish
+            </p>
         </footer>
     );
 };
