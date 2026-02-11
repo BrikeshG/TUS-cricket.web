@@ -73,10 +73,49 @@ exports.handler = async (event, context) => {
         const format = body.format || (event.queryStringParameters && event.queryStringParameters.format);
         const statsData = body.statsData; // Array of { name, runs, wickets, catches, matches }
 
-        console.log(`Starting CricClubs stats sync for season ${season}, format ${format || 'All'}...`);
-
         // Initialize Supabase client
         const supabase = createClient(supabaseUrl, supabaseKey);
+
+        // ==========================================
+        // DIRECT WRITE MODE: bypass all sync logic
+        // Accepts: { action: 'directWrite', players: [ { player_name, season, format, runs, wickets, catches, matches } ] }
+        // ==========================================
+        if (body.action === 'directWrite' && Array.isArray(body.players)) {
+            console.log(`Direct write mode: ${body.players.length} records`);
+            const results = { success: 0, failed: 0 };
+
+            for (const p of body.players) {
+                const { error } = await supabase
+                    .from('player_stats')
+                    .upsert({
+                        player_name: p.player_name,
+                        season: parseInt(p.season) || season,
+                        format: p.format,
+                        runs: parseInt(p.runs) || 0,
+                        wickets: parseInt(p.wickets) || 0,
+                        catches: parseInt(p.catches) || 0,
+                        matches: parseInt(p.matches) || 0,
+                        updated_at: new Date().toISOString()
+                    }, {
+                        onConflict: 'player_name,season,format'
+                    });
+
+                if (error) {
+                    console.error(`Direct write failed for ${p.player_name}:`, error);
+                    results.failed++;
+                } else {
+                    results.success++;
+                }
+            }
+
+            return {
+                statusCode: 200,
+                headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+                body: JSON.stringify({ success: true, message: 'Direct write complete', results })
+            };
+        }
+
+        console.log(`Starting CricClubs stats sync for season ${season}, format ${format || 'All'}...`);
 
         let finalStats = {}; // { playerName: { t20: {...}, fifty: {...} } }
 
