@@ -115,6 +115,78 @@ exports.handler = async (event, context) => {
             };
         }
 
+        // ==========================================
+        // LIST NAMES: Query exact names from DB
+        // ==========================================
+        if (body.action === 'listNames') {
+            const { data: squadNames } = await supabase.from('squad').select('name').eq('is_active', true).order('name');
+            const { data: statsNames } = await supabase.from('player_stats').select('player_name,format,runs,wickets,catches,matches').eq('season', season).order('player_name');
+            return {
+                statusCode: 200,
+                headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+                body: JSON.stringify({ squad: squadNames, stats: statsNames })
+            };
+        }
+
+        // ==========================================
+        // DIRECT WRITE BY SQUAD NAME: Uses case-insensitive lookup
+        // Accepts: { action: 'directWriteBySquadName', players: [ { lastName, format, runs, wickets, catches, matches } ] }
+        // Looks up the actual name from the squad table using case-insensitive last-name match
+        // ==========================================
+        if (body.action === 'directWriteBySquadName' && Array.isArray(body.players)) {
+            const { data: squadMembers } = await supabase.from('squad').select('name').eq('is_active', true);
+            if (!squadMembers) {
+                return { statusCode: 500, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ error: 'Failed to fetch squad' }) };
+            }
+
+            const results = { success: 0, failed: 0, details: [] };
+
+            for (const p of body.players) {
+                // Find the squad member whose name ends with the given lastName (case-insensitive)
+                const member = squadMembers.find(m => {
+                    const parts = m.name.split(' ');
+                    const dbLast = parts[parts.length - 1].toLowerCase();
+                    return dbLast === p.lastName.toLowerCase();
+                });
+
+                if (!member) {
+                    results.details.push({ lastName: p.lastName, status: 'NOT_FOUND' });
+                    results.failed++;
+                    continue;
+                }
+
+                const { error } = await supabase
+                    .from('player_stats')
+                    .upsert({
+                        player_name: member.name,
+                        season: parseInt(p.season) || season,
+                        format: p.format,
+                        runs: parseInt(p.runs) || 0,
+                        wickets: parseInt(p.wickets) || 0,
+                        catches: parseInt(p.catches) || 0,
+                        matches: parseInt(p.matches) || 0,
+                        updated_at: new Date().toISOString()
+                    }, {
+                        onConflict: 'player_name,season,format'
+                    });
+
+                if (error) {
+                    results.details.push({ lastName: p.lastName, dbName: member.name, status: 'DB_ERROR', error: error.message });
+                    results.failed++;
+                } else {
+                    results.details.push({ lastName: p.lastName, dbName: member.name, status: 'OK' });
+                    results.success++;
+                }
+            }
+
+            return {
+                statusCode: 200,
+                headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+                body: JSON.stringify({ success: true, message: 'Direct write by squad name complete', results })
+            };
+        }
+
+
         console.log(`Starting CricClubs stats sync for season ${season}, format ${format || 'All'}...`);
 
         let finalStats = {}; // { playerName: { t20: {...}, fifty: {...} } }
