@@ -155,18 +155,34 @@ exports.handler = async (event, context) => {
                 const key = fmt === 'T20' ? 't20' : 'fifty';
                 const s = stats[key];
 
-                // Only update if there's actual data (unless it's a manual sync intended to clear/overwrite)
+                // Only update if there's actual data
                 if (s.matches > 0 || s.runs > 0 || s.wickets > 0 || s.catches > 0) {
+                    // Fetch existing record first to merge (prevents batting sync from zeroing catches, etc.)
+                    const { data: existing } = await supabase
+                        .from('player_stats')
+                        .select('runs, wickets, catches, matches')
+                        .eq('player_name', playerName)
+                        .eq('season', season)
+                        .eq('format', fmt)
+                        .single();
+
+                    const merged = {
+                        runs: s.runs > 0 ? s.runs : (existing?.runs || 0),
+                        wickets: s.wickets > 0 ? s.wickets : (existing?.wickets || 0),
+                        catches: s.catches > 0 ? s.catches : (existing?.catches || 0),
+                        matches: s.matches > 0 ? s.matches : (existing?.matches || 0)
+                    };
+
                     const { error } = await supabase
                         .from('player_stats')
                         .upsert({
                             player_name: playerName,
                             season: season,
                             format: fmt,
-                            runs: s.runs,
-                            wickets: s.wickets,
-                            catches: s.catches,
-                            matches: s.matches,
+                            runs: merged.runs,
+                            wickets: merged.wickets,
+                            catches: merged.catches,
+                            matches: merged.matches,
                             updated_at: new Date().toISOString()
                         }, {
                             onConflict: 'player_name,season,format'
