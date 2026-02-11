@@ -166,11 +166,21 @@ exports.handler = async (event, context) => {
                         .eq('format', fmt)
                         .single();
 
+                    // Determine which stat type was sent by checking what the bookmarklet provided.
+                    // Batting sends: runs + matches (wickets=0, catches=0)
+                    // Bowling sends: wickets + matches (runs=0, catches=0)
+                    // Fielding sends: catches (matches=0, runs=0, wickets=0)
+                    // We ALWAYS overwrite the fields the bookmarklet is responsible for,
+                    // even if the value is 0, to fix stale data.
+                    const isBattingSync = s.runs > 0 || (s.matches > 0 && s.wickets === 0 && s.catches === 0);
+                    const isBowlingSync = s.wickets > 0 || (s.matches > 0 && s.runs === 0 && s.catches === 0);
+                    const isFieldingSync = s.catches > 0 || (s.matches === 0 && s.runs === 0 && s.wickets === 0);
+
                     const merged = {
-                        runs: s.runs > 0 ? s.runs : (existing?.runs || 0),
-                        wickets: s.wickets > 0 ? s.wickets : (existing?.wickets || 0),
-                        catches: s.catches > 0 ? s.catches : (existing?.catches || 0),
-                        matches: s.matches > 0 ? s.matches : (existing?.matches || 0)
+                        runs: isBattingSync ? s.runs : (existing?.runs || 0),
+                        wickets: isBowlingSync ? s.wickets : (existing?.wickets || 0),
+                        catches: isFieldingSync ? s.catches : (existing?.catches || 0),
+                        matches: (s.matches > 0) ? s.matches : (existing?.matches || 0)
                     };
 
                     const { error } = await supabase
