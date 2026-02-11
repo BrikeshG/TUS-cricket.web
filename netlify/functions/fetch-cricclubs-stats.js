@@ -77,6 +77,17 @@ exports.handler = async (event, context) => {
         const supabase = createClient(supabaseUrl, supabaseKey);
 
         // ==========================================
+        // ADD SQUAD MEMBER: Insert a new player into the squad table
+        // ==========================================
+        if (body.action === 'addSquadMember' && body.name) {
+            const { data, error } = await supabase.from('squad').insert({ name: body.name, is_active: true }).select();
+            if (error) {
+                return { statusCode: 400, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ error: error.message }) };
+            }
+            return { statusCode: 200, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ success: true, member: data }) };
+        }
+
+        // ==========================================
         // DIRECT WRITE MODE: bypass all sync logic
         // Accepts: { action: 'directWrite', players: [ { player_name, season, format, runs, wickets, catches, matches } ] }
         // ==========================================
