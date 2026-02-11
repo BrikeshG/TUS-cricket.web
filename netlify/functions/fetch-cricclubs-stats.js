@@ -14,6 +14,19 @@ const FIFTY_TEAM_ID = '1511';
 
 // Netlify Scheduled Function - Runs every day at 2:00 AM UTC
 exports.handler = async (event, context) => {
+    // Handle CORS preflight for bookmarklet cross-origin requests
+    if (event.httpMethod === 'OPTIONS') {
+        return {
+            statusCode: 204,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+            },
+            body: ''
+        };
+    }
+
     try {
         const now = new Date();
         const currentYear = now.getFullYear();

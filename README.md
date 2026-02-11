@@ -108,9 +108,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👤 Author
 
-**Brikesh Gelal**  
+**Brikesh Vikin Gowrish**  
 Full-Stack Developer | Bavaria, Germany
 
 ---
 
-*Built with ❤️ for the cricket community in Pfarrkirchen*
+*Built with passion for the cricket community in Pfarrkirchen*
